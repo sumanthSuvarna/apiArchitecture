@@ -1,24 +1,14 @@
 var express = require('express');
 var app = express();
 
+var api = require('./api/api');
+var config = require('./config/config');
+var logger = require('./util/logger');
+
 // setup the app middlware
 require('./middleware/appMiddleware')(app);
 
-var jsonData = { count: 12, message: 'hey' };
-
-app.get('/', function (req, res) {
-    // res.sendFile takes an absolute path to a file and
-    // sets the mime type based n the file extname
-    res.sendFile(__dirname + '/index.html', function (err) {
-        if (err) {
-            res.status(500).send(err);
-        }
-    })
-});
-
-app.get('/data', function (req, res) {
-    res.json(jsonData);
-});
-
+//setup the api
+app.use('/orgs/xendit/', api)
 
 module.exports = app;
