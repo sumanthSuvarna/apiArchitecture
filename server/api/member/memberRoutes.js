@@ -1,13 +1,13 @@
 var router = require('express').Router();
 var logger = require('../../util/logger');
 
+var members = []
+
 // setup boilerplate route jsut to satisfy a request
 // for building
-router.route('/')
-    .get(function (req, res, next) {
-        logger.log('Hey from user!!');
-        // next(new Error('messed up'));
-        res.send({ ok: 'get request recieved' });
-    });
+router.route('/').get((req, res, next) => {
+    res.json(members);
+});
+
 
 module.exports = router;
