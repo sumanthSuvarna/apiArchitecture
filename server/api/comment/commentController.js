@@ -3,39 +3,39 @@ var Organisation = require('../organisation/organisationModel');
 var _ = require('lodash');
 var logger = require('../../util/logger');
 
-exports.get = function (req, res, next) {
+exports.get = (req, res, next) => {
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (organisation) {
+        .then((organisation) => {
             return organisation.comments
-        }, function (err) {
+        }, (err) => {
             next(err);
-        }).then(function (comments) {
+        }).then((comments) => {
             res.json(comments);
         });
 };
 
-exports.post = function (req, res, next) {
+exports.post = (req, res, next) => {
     var newComment = req.body;
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (organisation) {
+        .then((organisation) => {
             var comments = organisation.comments;
             comments.push(newComment)
 
             organisation.save()
             res.json(newComment);
-        }, function (err) {
+        }, (err) => {
             next(err);
         })
 };
 
-exports.delete = function (req, res, next) {
+exports.delete = (req, res, next) => {
 
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
+        .then((org) => {
             org.comments = [];
             org.save()
             res.json(org.comments);
-        }, function (err) {
+        }, (err) => {
             next(err);
         })
 

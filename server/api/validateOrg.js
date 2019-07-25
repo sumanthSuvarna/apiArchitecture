@@ -1,9 +1,9 @@
 
 var Organisation = require('./organisation/organisationModel');
 
-exports.middlewareForParan = function (req, res, next) {
+exports.middlewareForParan = (req, res, next) => {
     Organisation.findOne({ orgname: req.params.orgname }, 'orgname impediment',
-        function (err, result) {
+        (err, result) => {
             if (!result) {
                 err = new Error('UnauthorizedError')
                 next(err);
