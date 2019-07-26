@@ -28,7 +28,6 @@ exports.post = function (req, res, next) {
 };
 
 exports.delete = function (req, res, next) {
-
     Organisation.findOne({ orgname: req.orgname })
         .then(function (org) {
             org.members = [];

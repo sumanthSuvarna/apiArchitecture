@@ -1,4 +1,6 @@
 var Org = require('../api/organisation/organisationModel');
+var Comment = require('../api/comment/commentModel');
+var Member = require('../api/member/memberModel');
 var _ = require('lodash');
 var logger = require('./logger');
 
@@ -24,7 +26,7 @@ var createDoc = function (model, doc) {
 
 var cleanDB = function () {
     logger.log('... cleaning the DB');
-    var cleanPromises = [Org]
+    var cleanPromises = [Org, Comment, Member]
         .map(function (model) {
             return model.remove().exec();
         });

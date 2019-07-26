@@ -9,11 +9,10 @@ exports.middlewareForParan = function (req, res, next) {
                 next(err);
             } else {
                 req.orgname = req.params.orgname
+                req.orgid = result._id
                 next();
             }
 
         }
     )
-
-
 }

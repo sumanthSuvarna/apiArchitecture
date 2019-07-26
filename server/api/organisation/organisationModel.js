@@ -6,9 +6,7 @@ var orgSchema = new Schema({
         type: String,
         required: true,
         unique: true
-    },
-    members: [{ type: Schema.Types.ObjectId, ref: 'member' }],
-    comments: [{ comment: String }]
+    }
 });
 
 module.exports = mongoose.model('organisation', orgSchema);
