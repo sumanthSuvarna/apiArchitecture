@@ -4,36 +4,32 @@ var _ = require('lodash');
 var logger = require('../../util/logger');
 
 exports.get = function (req, res, next) {
-    Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
-            return org.members
+    mySort = { followers: -1 }
+    Member.find({ org: req.orgid },
+        function (err, result) {
+            if (err) next(err);
+            else logger.log(result)
+        }).sort(mySort)
+        .then(function (members) {
+            res.json(members)
         }, function (err) {
             next(err);
-        }).then(function (members) {
-            res.json(members);
-        });
+        })
 };
 
 exports.post = function (req, res, next) {
     var newMember = req.body;
-    Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
-            var members = org.members;
-            members.push(newMember)
-            org.save()
-            res.json(newMember);
-        }, function (err) {
-            next(err);
-        })
+    newMember["org"] = req.orgid
+    const member = new Member(newMember)
+    member.save(function (err) {
+        if (err) next(err);
+    })
+    res.json(newMember)
 };
 
 exports.delete = function (req, res, next) {
-    Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
-            org.members = [];
-            org.save()
-            res.json(org.members);
-        }, function (err) {
-            next(err);
-        })
+    Member.delete({ org: req.orgid }, function (err, data) {
+        if (err) next(err);
+    })
+    res.json([])
 };

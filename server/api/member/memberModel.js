@@ -22,7 +22,8 @@ var ModelSchema = new Schema({
     following: {
         type: Number,
         required: true
-    }
+    },
+    org: { type: Schema.Types.ObjectId, ref: 'organisation' },
 });
 
 module.exports = mongoose.model('member', ModelSchema);

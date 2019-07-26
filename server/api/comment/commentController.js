@@ -25,7 +25,6 @@ exports.post = function (req, res, next) {
 exports.delete = function (req, res, next) {
     Comment.delete({ org: req.orgid }, function (err, data) {
         if (err) next(err);
-        console.log(data)
     })
     res.json([])
 };
