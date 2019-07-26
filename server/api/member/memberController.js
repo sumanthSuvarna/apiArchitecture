@@ -3,37 +3,38 @@ var Organisation = require('../organisation/organisationModel');
 var _ = require('lodash');
 var logger = require('../../util/logger');
 
-exports.get = function (req, res, next) {
+exports.get = (req, res, next) => {
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
+        .then((org) => {
             return org.members
-        }, function (err) {
+        }, (err) => {
             next(err);
-        }).then(function (members) {
+        }).then((members) => {
             res.json(members);
         });
 };
 
-exports.post = function (req, res, next) {
+exports.post = (req, res, next) => {
     var newMember = req.body;
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
+        .then((org) => {
             var members = org.members;
             members.push(newMember)
             org.save()
             res.json(newMember);
-        }, function (err) {
+        }, (err) => {
             next(err);
         })
 };
 
-exports.delete = function (req, res, next) {
+exports.delete = (req, res, next) => {
+
     Organisation.findOne({ orgname: req.orgname })
-        .then(function (org) {
+        .then((org) => {
             org.members = [];
             org.save()
             res.json(org.members);
-        }, function (err) {
+        }, (err) => {
             next(err);
         })
 };

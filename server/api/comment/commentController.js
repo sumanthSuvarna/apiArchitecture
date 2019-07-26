@@ -3,29 +3,40 @@ var Organisation = require('../organisation/organisationModel');
 var _ = require('lodash');
 var logger = require('../../util/logger');
 
-exports.get = function (req, res, next) {
-    Comment.find({ org: req.orgid, deleted: false }, 'comment impediment')
-        .then(function (comments) {
-            res.json(comments)
-        }, function (err) {
+exports.get = (req, res, next) => {
+    Organisation.findOne({ orgname: req.orgname })
+        .then((organisation) => {
+            return organisation.comments
+        }, (err) => {
+            next(err);
+        }).then((comments) => {
+            res.json(comments);
+        });
+};
+
+exports.post = (req, res, next) => {
+    var newComment = req.body;
+    Organisation.findOne({ orgname: req.orgname })
+        .then((organisation) => {
+            var comments = organisation.comments;
+            comments.push(newComment)
+
+            organisation.save()
+            res.json(newComment);
+        }, (err) => {
             next(err);
         })
 };
 
-exports.post = function (req, res, next) {
-    var newComment = req.body;
-    newComment["org"] = req.orgid
-    const newCommant = new Comment(newComment)
-    newCommant.save(function (err) {
-        if (err) next(err);
-    })
-    res.json(newComment)
-};
+exports.delete = (req, res, next) => {
 
-exports.delete = function (req, res, next) {
-    Comment.delete({ org: req.orgid }, function (err, data) {
-        if (err) next(err);
-        console.log(data)
-    })
-    res.json([])
+    Organisation.findOne({ orgname: req.orgname })
+        .then((org) => {
+            org.comments = [];
+            org.save()
+            res.json(org.comments);
+        }, (err) => {
+            next(err);
+        })
+
 };
